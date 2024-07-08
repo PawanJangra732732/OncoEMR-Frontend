@@ -14,6 +14,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 const formSchema = z.object({
   first_name: z.string().min(2).max(20),
@@ -27,6 +29,9 @@ const formSchema = z.object({
   state_of_birth: z.string().min(2).max(20),
   country_of_birth: z.string().min(2).max(20),
   mothers_maiden_name: z.string().min(2).max(20),
+  have_siblings: z.string(),
+  record_number: z.string(),
+  ssn_number: z.string(),
 });
 
 export default function CustomForm() {
@@ -247,40 +252,58 @@ export default function CustomForm() {
               Add another name
             </button>
           </div> */}
-            <div>
-              <label className="block text-gray-700">Have Siblings?</label>
-              <div className="mt-1">
-                <input
-                  type="radio"
-                  name="siblings"
-                  value="yes"
-                  className="mr-2"
-                />{" "}
-                Yes
-                <input
-                  type="radio"
-                  name="siblings"
-                  value="no"
-                  className="ml-4 mr-2"
-                />{" "}
-                No
-              </div>
-            </div>
-            <div>
-              <label className="block text-gray-700">Record Number *</label>
-              <input
-                type="text"
-                defaultValue="179042"
-                className="w-full mt-1 p-2 border border-gray-300 rounded"
-              />
-            </div>
-            <div>
-              <label className="block text-gray-700">SSN</label>
-              <input
-                type="text"
-                className="w-full mt-1 p-2 border border-gray-300 rounded"
-              />
-            </div>
+
+            <FormField
+              control={form.control}
+              name="have_siblings"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Have Siblings</FormLabel>
+                  <FormControl>
+                    <>
+                      <RadioGroup defaultValue="option-one" className="">
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem value="yes" id="option-one" />
+                          <Label htmlFor="option-one">Yes</Label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem value="no" id="option-two" />
+                          <Label htmlFor="option-two">No</Label>
+                        </div>
+                      </RadioGroup>
+                    </>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="record_number"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Record Number *</FormLabel>
+                  <FormControl>
+                    <Input placeholder="ex. 179042" type="text" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="ssn_number"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>SSN</FormLabel>
+                  <FormControl>
+                    <Input placeholder="ex. 179042" type="text" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
             <div>
               <label className="block text-gray-700">Birth Sex *</label>
               <select className="w-full mt-1 p-2 border border-gray-300 rounded">
