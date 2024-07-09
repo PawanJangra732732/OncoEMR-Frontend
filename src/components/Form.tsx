@@ -31,10 +31,30 @@ import { CheckboxWithText } from "./check-box";
 
 const formSchema = z.object({
   first_name: z.string().min(2).max(20),
-  middle_name: z.string().min(2).max(20).optional(),
+  middle_name: z.string().optional(),
   last_name: z.string().min(2).max(20),
-  suffix: z.string().min(2).max(20).optional(),
-  maiden_name: z.string().min(2).max(20).optional(),
+  suffix: z.string().optional(),
+  mobile_number: z.string().refine(
+    (val) => {
+      const mobileNumberRegex = /^\+?[1-9]\d{1,14}$/; // regex for international format
+      return mobileNumberRegex.test(val);
+    },
+    {
+      message: "Invalid mobile number format.",
+    }
+  ),
+  email: z.string().email(),
+  address: z.string().min(10, "please provide your full address"),
+  insurance_company: z
+    .string()
+    .min(2, "please provide a valid insurance company name"),
+  insurance_member_id: z
+    .string()
+    .min(2, "please provide a valid insurance member id"),
+  effective_date_of_insurance: z.string().date().optional(),
+  preferred_contact_method: z.string(),
+  referring_provider: z.string(),
+  maiden_name: z.string().optional(),
   date_of_birth: z.string().date(),
   birth_time: z.string().time().optional(),
   city_of_birth: z.string().min(2).max(20),
@@ -44,7 +64,7 @@ const formSchema = z.object({
   have_siblings: z.string().optional(),
   record_number: z.string(),
   ssn_number: z.string().optional(),
-  sex: z.string(),
+  sex: z.string().min(2, "field is required"),
   sexual_orientation: z.string(),
   ethnicity: z.string().optional(),
   affiliated_tribe: z.string().optional(),
@@ -85,6 +105,8 @@ export default function CustomForm() {
       first_name: "",
       middle_name: "",
       last_name: "",
+      mobile_number: "",
+      preferred_contact_method: "",
       suffix: "",
       maiden_name: "",
       date_of_birth: "",
@@ -113,6 +135,11 @@ export default function CustomForm() {
       dnr: "",
       last_verified: "",
       benefit_status: "",
+      referring_provider: "",
+      address: "",
+      insurance_company: "",
+      insurance_member_id: "",
+      effective_date_of_insurance: "",
     },
   });
 
@@ -185,6 +212,151 @@ export default function CustomForm() {
 
           <FormField
             control={form.control}
+            name="mobile_number"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Mobile Number</FormLabel>
+                <FormControl>
+                  <Input placeholder="Mobile Number" type="text" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Email</FormLabel>
+                <FormControl>
+                  <Input placeholder="email" type="text" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="address"
+            render={({ field }) => (
+              <FormItem className="col-span-1 md:col-span-2">
+                <FormLabel>Address</FormLabel>
+                <FormControl>
+                  <Textarea
+                    placeholder="your full Address here..."
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="insurance_company"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Insurance Company</FormLabel>
+                <FormControl>
+                  <Input
+                    type="text"
+                    placeholder="Insurance Company full name"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="insurance_member_id"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Insurance Member ID</FormLabel>
+                <FormControl>
+                  <Input
+                    type="text"
+                    placeholder="Insurance Member ID"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="effective_date_of_insurance"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Effective Date of Insurance</FormLabel>
+                <FormControl>
+                  <Input
+                    type="date"
+                    placeholder="Effective Date of Insurance"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="preferred_contact_method"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Preferred Contact Method *</FormLabel>
+                <FormControl>
+                  <Select onValueChange={field.onChange} {...field}>
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="select any one" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        <SelectLabel>
+                          Select your Preferred Contact Method
+                        </SelectLabel>
+                        <SelectItem value="phone">Phone</SelectItem>
+                        <SelectItem value="email">Email</SelectItem>
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                  {/* <Input placeholder="ex. 179042" type="text" {...field} /> */}
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="referring_provider"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Referring Provider</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="referring provider"
+                    type="text"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
             name="maiden_name"
             render={({ field }) => (
               <FormItem>
@@ -211,9 +383,6 @@ export default function CustomForm() {
             )}
           />
 
-          <div className="pt-4 col-span-1 md:col-span-2 text-md font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 ">
-            Place of Birth
-          </div>
           <FormField
             control={form.control}
             name="birth_time"
@@ -227,6 +396,10 @@ export default function CustomForm() {
               </FormItem>
             )}
           />
+
+          <div className="pt-4 col-span-1 md:col-span-2 text-md font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 ">
+            Place of Birth
+          </div>
 
           <FormField
             control={form.control}
@@ -848,15 +1021,12 @@ export default function CustomForm() {
 
           <FormField
             control={form.control}
-            name="text_patient"
+            name="photo"
             render={({ field }) => (
-              <FormItem className="flex mt-10">
-                <FormControl className="h-full flex items-center content-center">
-                  <CheckboxWithText
-                    checked={field.value}
-                    onCheckedChange={field.onChange}
-                    text="Test Patient"
-                  />
+              <FormItem>
+                <FormLabel>Photo</FormLabel>
+                <FormControl>
+                  <Input type="file" />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -865,12 +1035,15 @@ export default function CustomForm() {
 
           <FormField
             control={form.control}
-            name="photo"
+            name="text_patient"
             render={({ field }) => (
-              <FormItem>
-                <FormLabel>Photo</FormLabel>
-                <FormControl>
-                  <Input type="file" />
+              <FormItem className="flex mt-5">
+                <FormControl className="h-full flex items-center content-center">
+                  <CheckboxWithText
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                    text="Test Patient"
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
