@@ -29,10 +29,32 @@ import { lang } from "@/dummy-data/lang";
 import { Textarea } from "@/components/ui/textarea";
 import { CheckboxWithText } from "./check-box";
 
+// Don't Remove
+// Here are the Main Filed which are mentioned in our Contract
+// Digital form to include the below entry fields:
+//  Name ✔️
+//  Address ✔️
+//  Date of birth ✔️
+//  Gender ✔️
+//  Mobile phone number ✔️
+//  Email address ✔️
+//  Option to indicate preferred contact method ✔️
+//  Referring provider ✔️
+//  Insurance company ✔️
+//  Insurance member ID ✔️
+//  Effective date of insurance ✔️
+
 const formSchema = z.object({
-  first_name: z.string().min(2).max(20),
+  physician: z.string().min(2, { message: "please select your physician" }),
+  first_name: z
+    .string()
+    .min(1, { message: "Please enter a valid first Name" })
+    .max(20),
   middle_name: z.string().optional(),
-  last_name: z.string().min(2).max(20),
+  last_name: z
+    .string()
+    .min(2, { message: "Please enter a valid last Name" })
+    .max(20),
   suffix: z.string().optional(),
   mobile_number: z.string().refine(
     (val) => {
@@ -44,7 +66,10 @@ const formSchema = z.object({
     }
   ),
   email: z.string().email(),
-  address: z.string().min(10, "please provide your full address"),
+  address_line_1: z.string().min(10, "please provide your full address"),
+  city: z.string().min(1, { message: "required" }),
+  state: z.string().min(1, { message: "required" }),
+  country: z.string().min(1, { message: "required" }),
   insurance_company: z
     .string()
     .min(2, "please provide a valid insurance company name"),
@@ -60,9 +85,9 @@ const formSchema = z.object({
   city_of_birth: z.string().min(2).max(20),
   state_of_birth: z.string().min(2).max(20),
   country_of_birth: z.string().min(2).max(20),
-  mothers_maiden_name: z.string().min(2).max(20).optional(),
+  // mothers_maiden_name: z.string().min(2).max(20).optional(),
   have_siblings: z.string().optional(),
-  record_number: z.string(),
+  // record_number: z.string(),
   ssn_number: z.string().optional(),
   sex: z.string().min(2, "field is required"),
   sexual_orientation: z.string(),
@@ -72,36 +97,33 @@ const formSchema = z.object({
   marital_status: z.string().optional(),
   salutation: z.string().optional(),
   employer: z.string().optional(),
-  occupation: z.string().optional(),
-  industry: z.string().optional(),
-  occupation_start_date: z.string().date().optional(),
-  occupation_end_date: z.string().date().optional(),
   preferred_language: z.string().optional(),
   preferred_clinic: z.string().optional(),
   status: z.string().optional(),
-  date_of_death: z.string().optional(),
-  cause_of_death: z.string().optional(),
-  living_will: z.string().optional(),
-  durable_power_of_attorney: z.string().optional(),
-  dnr: z.string().optional(),
-  last_verified: z.string().date().optional(),
-  benefit_status: z.string().optional(),
-  text_patient: z.boolean().default(false).optional(),
-  photo: z
-    .instanceof(File)
-    .refine(
-      (file) => ["image/jpeg", "image/png", "image/gif"].includes(file.type),
-      {
-        message:
-          "Invalid file type. Only JPEG, PNG, and GIF images are allowed.",
-      }
-    ),
+  // date_of_death: z.string().optional(),
+  // cause_of_death: z.string().optional(),
+  // living_will: z.string().optional(),
+  // durable_power_of_attorney: z.string().optional(),
+  // dnr: z.string().optional(),
+  // last_verified: z.string().date().optional(),
+  // benefit_status: z.string().optional(),
+  test_patient: z.boolean().default(false).optional(),
+  // photo: z
+  //   .instanceof(File)
+  //   .refine(
+  //     (file) => ["image/jpeg", "image/png", "image/gif"].includes(file.type),
+  //     {
+  //       message:
+  //         "Invalid file type. Only JPEG, PNG, and GIF images are allowed.",
+  //     }
+  //   ),
 });
 
 export default function CustomForm() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      physician: "",
       first_name: "",
       middle_name: "",
       last_name: "",
@@ -113,7 +135,7 @@ export default function CustomForm() {
       city_of_birth: "",
       state_of_birth: "",
       country_of_birth: "",
-      mothers_maiden_name: "",
+      // mothers_maiden_name: "",
       sex: "",
       sexual_orientation: "",
       ethnicity: "",
@@ -122,19 +144,15 @@ export default function CustomForm() {
       marital_status: "",
       salutation: "",
       employer: "",
-      occupation: "",
-      industry: "",
-      occupation_start_date: "",
-      occupation_end_date: "",
       preferred_language: "",
       preferred_clinic: "",
-      date_of_death: "",
-      cause_of_death: "",
-      living_will: "",
-      durable_power_of_attorney: "",
-      dnr: "",
-      last_verified: "",
-      benefit_status: "",
+      // date_of_death: "",
+      // cause_of_death: "",
+      // living_will: "",
+      // durable_power_of_attorney: "",
+      // dnr: "",
+      // last_verified: "",
+      // benefit_status: "",
       referring_provider: "",
       address: "",
       insurance_company: "",
@@ -152,10 +170,47 @@ export default function CustomForm() {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="max-w-fit mx-auto p-6 shadow-md rounded space-y-8"
+        className="max-w-full sm:max-w-lg md:max-w-3xl mx-auto p-6 shadow-md rounded space-y-8 text-xl"
       >
-        <h2 className="text-2xl font-semibold mb-4">Physician Information</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <FormField
+            control={form.control}
+            name="physician"
+            render={({ field }) => (
+              <FormItem className="col-span-1 md:col-span-2">
+                <FormLabel>Physician</FormLabel>
+                <FormControl>
+                  <Select onValueChange={field.onChange} {...field}>
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Select Physician" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        <SelectLabel>Select your Physician</SelectLabel>
+                        <SelectItem value="Ali, NP, Jessica Fay">
+                          Ali, NP, Jessica Fay
+                        </SelectItem>
+                        <SelectItem value="Gelfand, MD, Robert">
+                          Gelfand, MD, Robert
+                        </SelectItem>
+                        <SelectItem value="Ghuman, MD, Damanjit">
+                          Ghuman, MD, Damanjit
+                        </SelectItem>
+                        <SelectItem value="Kramer, MD, Rachel">
+                          Kramer, MD, Rachel
+                        </SelectItem>
+                        <SelectItem value="Livescu, NP, Nicole">
+                          Livescu, NP, Nicole
+                        </SelectItem>
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
           <FormField
             control={form.control}
             name="first_name"
@@ -240,15 +295,137 @@ export default function CustomForm() {
 
           <FormField
             control={form.control}
-            name="address"
+            name="preferred_contact_method"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Preferred Contact Method *</FormLabel>
+                <FormControl>
+                  <Select onValueChange={field.onChange} {...field}>
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="select any one" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        <SelectLabel>
+                          Select your Preferred Contact Method
+                        </SelectLabel>
+                        <SelectItem value="phone">Phone</SelectItem>
+                        <SelectItem value="email">Email</SelectItem>
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="maiden_name"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Maiden Name</FormLabel>
+                <FormControl>
+                  <Input placeholder="Maiden Name" type="text" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="date_of_birth"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Date Of Birth *</FormLabel>
+                <FormControl>
+                  <Input placeholder="Date of Birth" type="date" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="birth_time"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Birth Time</FormLabel>
+                <FormControl>
+                  <Input placeholder="Birth Time" type="time" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="address_line_1"
             render={({ field }) => (
               <FormItem className="col-span-1 md:col-span-2">
-                <FormLabel>Address</FormLabel>
+                <FormLabel>Address Line 1</FormLabel>
                 <FormControl>
                   <Textarea
+                    rows={1}
                     placeholder="your full Address here..."
                     {...field}
                   />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="city"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>City</FormLabel>
+                <FormControl>
+                  <Input placeholder="City of Birth" type="text" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="state"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>State</FormLabel>
+                <FormControl>
+                  <>
+                    <Input
+                      placeholder="State of Birth"
+                      type="text"
+                      {...field}
+                    />
+                  </>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="country"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Country</FormLabel>
+                <FormControl>
+                  <>
+                    <Input
+                      placeholder="Country of Birth"
+                      type="text"
+                      {...field}
+                    />
+                  </>
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -311,34 +488,6 @@ export default function CustomForm() {
 
           <FormField
             control={form.control}
-            name="preferred_contact_method"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Preferred Contact Method *</FormLabel>
-                <FormControl>
-                  <Select onValueChange={field.onChange} {...field}>
-                    <SelectTrigger className="w-full">
-                      <SelectValue placeholder="select any one" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectGroup>
-                        <SelectLabel>
-                          Select your Preferred Contact Method
-                        </SelectLabel>
-                        <SelectItem value="phone">Phone</SelectItem>
-                        <SelectItem value="email">Email</SelectItem>
-                      </SelectGroup>
-                    </SelectContent>
-                  </Select>
-                  {/* <Input placeholder="ex. 179042" type="text" {...field} /> */}
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
             name="referring_provider"
             render={({ field }) => (
               <FormItem>
@@ -349,48 +498,6 @@ export default function CustomForm() {
                     type="text"
                     {...field}
                   />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="maiden_name"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Maiden Name</FormLabel>
-                <FormControl>
-                  <Input placeholder="Maiden Name" type="text" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="date_of_birth"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Date Of Birth *</FormLabel>
-                <FormControl>
-                  <Input placeholder="Date of Birth" type="date" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="birth_time"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Birth Time</FormLabel>
-                <FormControl>
-                  <Input placeholder="Birth Time" type="time" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -455,12 +562,12 @@ export default function CustomForm() {
 
           <div className="col-span-1 md:col-span-2 mt-2"></div>
 
-          <FormField
+          {/* <FormField
             control={form.control}
             name="mothers_maiden_name"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Mother's Maiden Name</FormLabel>
+                <FormLabel>Mother&apos;s Maiden Name</FormLabel>
                 <FormControl>
                   <>
                     <Input
@@ -473,18 +580,7 @@ export default function CustomForm() {
                 <FormMessage />
               </FormItem>
             )}
-          />
-
-          {/* <div>
-            <label className="block text-gray-700">Other names</label>
-            <input
-              type="text"
-              className="w-full mt-1 p-2 border border-gray-300 rounded"
-            />
-            <button className="mt-2 px-4 py-2 bg-blue-500 text-white rounded">
-              Add another name
-            </button>
-          </div> */}
+          /> */}
 
           <FormField
             control={form.control}
@@ -494,7 +590,7 @@ export default function CustomForm() {
                 <FormLabel>Have Siblings</FormLabel>
                 <FormControl>
                   <>
-                    <RadioGroup defaultValue="option-one" className="">
+                    <RadioGroup defaultValue="option-one" className="flex">
                       <div className="flex items-center space-x-2">
                         <RadioGroupItem value="yes" id="option-one" />
                         <Label htmlFor="option-one">Yes</Label>
@@ -510,7 +606,7 @@ export default function CustomForm() {
               </FormItem>
             )}
           />
-          <FormField
+          {/* <FormField
             control={form.control}
             name="record_number"
             render={({ field }) => (
@@ -522,7 +618,7 @@ export default function CustomForm() {
                 <FormMessage />
               </FormItem>
             )}
-          />
+          /> */}
           <FormField
             control={form.control}
             name="ssn_number"
@@ -644,7 +740,11 @@ export default function CustomForm() {
               <FormItem>
                 <FormLabel>Affiliated Tribe</FormLabel>
                 <FormControl>
-                  <Input placeholder="ex. 179042" type="text" {...field} />
+                  <Input
+                    placeholder="Affiliated Tribe"
+                    type="text"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -659,7 +759,7 @@ export default function CustomForm() {
                 <FormLabel>Enrolled as Tribe Member</FormLabel>
                 <FormControl>
                   <>
-                    <RadioGroup defaultValue="option-one" className="">
+                    <RadioGroup defaultValue="option-one" className="flex">
                       <div className="flex items-center space-x-2">
                         <RadioGroupItem value="yes" id="option-one" />
                         <Label htmlFor="option-one">Yes</Label>
@@ -683,7 +783,32 @@ export default function CustomForm() {
               <FormItem>
                 <FormLabel>Marital Status</FormLabel>
                 <FormControl>
-                  <Input placeholder="Marital Status" type="text" {...field} />
+                  <Select onValueChange={field.onChange} {...field}>
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Select your Marital Status" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        <SelectLabel>Select your Marital Status</SelectLabel>
+                        <SelectItem value="Annulled">Annulled</SelectItem>
+                        <SelectItem value="Divorced">Divorced</SelectItem>
+                        <SelectItem value="Interlocutory">
+                          Interlocutory
+                        </SelectItem>
+                        <SelectItem value="Legally Separated">
+                          Legally Separated
+                        </SelectItem>
+                        <SelectItem value="Married">Married</SelectItem>
+                        <SelectItem value="Never Married">
+                          Never Married
+                        </SelectItem>
+                        <SelectItem value="Domestic Partner">
+                          Domestic Partner
+                        </SelectItem>
+                        <SelectItem value="Widowed">Widowed</SelectItem>
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -717,7 +842,7 @@ export default function CustomForm() {
               </FormItem>
             )}
           />
-          <FormField
+          {/* <FormField
             control={form.control}
             name="occupation"
             render={({ field }) => (
@@ -769,7 +894,7 @@ export default function CustomForm() {
                 <FormMessage />
               </FormItem>
             )}
-          />
+          /> */}
 
           {/* Preferred Language */}
           <FormField
@@ -863,7 +988,7 @@ export default function CustomForm() {
             )}
           />
 
-          <FormField
+          {/* <FormField
             control={form.control}
             name="date_of_death"
             render={({ field }) => (
@@ -875,28 +1000,28 @@ export default function CustomForm() {
                 <FormMessage />
               </FormItem>
             )}
-          />
+          /> */}
 
-          <FormField
+          {/* <FormField
             control={form.control}
             name="cause_of_death"
             render={({ field }) => (
-              <FormItem>
+              <FormItem className="col-span-1 md:col-span-2">
                 <FormLabel>Cause Of Death</FormLabel>
                 <FormControl>
-                  <Textarea rows={14} placeholder="Cause of Death" {...field} />
+                  <Textarea rows={4} placeholder="Cause of Death" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
-          />
+          /> */}
 
-          <div className="flex flex-col gap-y-5">
+          {/* <div className="col-span-1 md:col-span-2 flex flex-col gap-y-5">
             <div className="pt-2 text-md font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
               Advance Directives
-            </div>
+            </div> */}
 
-            <FormField
+          {/* <FormField
               control={form.control}
               name="living_will"
               render={({ field }) => (
@@ -926,8 +1051,8 @@ export default function CustomForm() {
                   <FormMessage />
                 </FormItem>
               )}
-            />
-            <FormField
+            /> */}
+          {/* <FormField
               control={form.control}
               name="durable_power_of_attorney"
               render={({ field }) => (
@@ -957,8 +1082,8 @@ export default function CustomForm() {
                   <FormMessage />
                 </FormItem>
               )}
-            />
-            <FormField
+            /> */}
+          {/* <FormField
               control={form.control}
               name="dnr"
               render={({ field }) => (
@@ -988,9 +1113,9 @@ export default function CustomForm() {
                   <FormMessage />
                 </FormItem>
               )}
-            />
+            /> */}
 
-            <FormField
+          {/* <FormField
               control={form.control}
               name="last_verified"
               render={({ field }) => (
@@ -1002,8 +1127,8 @@ export default function CustomForm() {
                   <FormMessage />
                 </FormItem>
               )}
-            />
-          </div>
+            /> */}
+          {/* </div> */}
 
           <FormField
             control={form.control}
@@ -1019,7 +1144,7 @@ export default function CustomForm() {
             )}
           />
 
-          <FormField
+          {/* <FormField
             control={form.control}
             name="photo"
             render={({ field }) => (
@@ -1031,13 +1156,13 @@ export default function CustomForm() {
                 <FormMessage />
               </FormItem>
             )}
-          />
+          /> */}
 
           <FormField
             control={form.control}
-            name="text_patient"
+            name="test_patient"
             render={({ field }) => (
-              <FormItem className="flex mt-5">
+              <FormItem className="flex mt-5 col-span-1 md:col-span-2">
                 <FormControl className="h-full flex items-center content-center">
                   <CheckboxWithText
                     checked={field.value}
