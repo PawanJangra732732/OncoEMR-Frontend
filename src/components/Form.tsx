@@ -25,9 +25,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { lang } from "@/dummy-data/lang";
+import { lang } from "@/app/dummy-data/lang";
 import { Textarea } from "@/components/ui/textarea";
-import { CheckboxWithText } from "./check-box";
+import { CheckboxWithText } from "@/components/check-box";
+import axios from "axios";
 
 // Don't Remove
 // Here are the Main Filed which are mentioned in our Contract
@@ -154,16 +155,25 @@ export default function CustomForm() {
       // last_verified: "",
       // benefit_status: "",
       referring_provider: "",
-      address: "",
+      address_line_1: "",
+      city: "",
+      state: "",
+      country: "",
       insurance_company: "",
       insurance_member_id: "",
       effective_date_of_insurance: "",
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: z.infer<typeof formSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
+    try {
+      const response = await axios.post("/api/form", values);
+      console.log("Form submitted successfully:", response.data);
+    } catch (error) {
+      console.error("Error submitting form:", error);
+    }
     console.log(values);
   }
   return (
