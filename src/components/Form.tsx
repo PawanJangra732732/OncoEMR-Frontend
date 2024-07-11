@@ -1,8 +1,8 @@
 "use client";
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -87,12 +87,12 @@ const formSchema = z.object({
   state_of_birth: z.string().min(2).max(20),
   country_of_birth: z.string().min(2).max(20),
   // mothers_maiden_name: z.string().min(2).max(20).optional(),
-  have_siblings: z.string().optional(),
+  // have_siblings: z.string().optional(),
   // record_number: z.string(),
   ssn_number: z.string().optional(),
   sex: z.string().min(2, "field is required"),
   sexual_orientation: z.string(),
-  ethnicity: z.string().optional(),
+  // ethnicity: z.string().optional(),
   affiliated_tribe: z.string().optional(),
   enrolled_as_tribe_member: z.string().optional(),
   marital_status: z.string().optional(),
@@ -139,7 +139,7 @@ export default function CustomForm() {
       // mothers_maiden_name: "",
       sex: "",
       sexual_orientation: "",
-      ethnicity: "",
+      // ethnicity: "",
       affiliated_tribe: "",
       enrolled_as_tribe_member: "",
       marital_status: "",
@@ -174,21 +174,21 @@ export default function CustomForm() {
     } catch (error) {
       console.error("Error submitting form:", error);
     }
-    console.log(values);
+    // console.log(values);
   }
   return (
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="max-w-full sm:max-w-lg md:max-w-3xl mx-auto p-6 shadow-md rounded space-y-8 text-xl"
+        className="max-w-lg  mx-auto p-6 shadow-md rounded space-y-8 text-xl"
       >
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1  gap-4">
           <FormField
             control={form.control}
             name="physician"
             render={({ field }) => (
-              <FormItem className="col-span-1 md:col-span-2">
-                <FormLabel>Physician</FormLabel>
+              <FormItem className="col-span-1 md:col-span-1 flex items-center gap-2">
+                <FormLabel className="mt-2 ">Physician</FormLabel>
                 <FormControl>
                   <Select onValueChange={field.onChange} {...field}>
                     <SelectTrigger className="w-full">
@@ -225,8 +225,8 @@ export default function CustomForm() {
             control={form.control}
             name="first_name"
             render={({ field }) => (
-              <FormItem>
-                <FormLabel>First Name *</FormLabel>
+              <FormItem className="flex items-center gap-2">
+                <FormLabel className="mt-2">First Name*</FormLabel>
                 <FormControl>
                   <Input placeholder="first name" type="text" {...field} />
                 </FormControl>
@@ -238,8 +238,8 @@ export default function CustomForm() {
             control={form.control}
             name="middle_name"
             render={({ field }) => (
-              <FormItem>
-                <FormLabel>Middle Name</FormLabel>
+              <FormItem className="flex items-center gap-2">
+                <FormLabel className="mt-2">Middle Name</FormLabel>
                 <FormControl>
                   <Input placeholder="middle name" type="text" {...field} />
                 </FormControl>
@@ -251,8 +251,8 @@ export default function CustomForm() {
             control={form.control}
             name="last_name"
             render={({ field }) => (
-              <FormItem>
-                <FormLabel>Last Name *</FormLabel>
+              <FormItem className="flex items-center gap-2">
+                <FormLabel className="mt-2">Last Name*</FormLabel>
                 <FormControl>
                   <Input placeholder="last name" type="text" {...field} />
                 </FormControl>
@@ -265,8 +265,8 @@ export default function CustomForm() {
             control={form.control}
             name="suffix"
             render={({ field }) => (
-              <FormItem>
-                <FormLabel>Suffix</FormLabel>
+              <FormItem className="flex items-center gap-2">
+                <FormLabel className="mt-2">Suffix</FormLabel>
                 <FormControl>
                   <Input placeholder="Suffix" type="text" {...field} />
                 </FormControl>
@@ -279,8 +279,8 @@ export default function CustomForm() {
             control={form.control}
             name="mobile_number"
             render={({ field }) => (
-              <FormItem>
-                <FormLabel>Mobile Number</FormLabel>
+              <FormItem className="flex items-center gap-2">
+                <FormLabel className="mt-2">Mobile Number</FormLabel>
                 <FormControl>
                   <Input placeholder="Mobile Number" type="text" {...field} />
                 </FormControl>
@@ -293,8 +293,8 @@ export default function CustomForm() {
             control={form.control}
             name="email"
             render={({ field }) => (
-              <FormItem>
-                <FormLabel>Email</FormLabel>
+              <FormItem className="flex items-center gap-2">
+                <FormLabel className="mt-2">Email</FormLabel>
                 <FormControl>
                   <Input placeholder="email" type="text" {...field} />
                 </FormControl>
@@ -307,8 +307,10 @@ export default function CustomForm() {
             control={form.control}
             name="preferred_contact_method"
             render={({ field }) => (
-              <FormItem>
-                <FormLabel>Preferred Contact Method *</FormLabel>
+              <FormItem className="flex items-center gap-2">
+                <FormLabel className="mt-2">
+                  Preferred Contact Method*
+                </FormLabel>
                 <FormControl>
                   <Select onValueChange={field.onChange} {...field}>
                     <SelectTrigger className="w-full">
@@ -334,8 +336,8 @@ export default function CustomForm() {
             control={form.control}
             name="maiden_name"
             render={({ field }) => (
-              <FormItem>
-                <FormLabel>Maiden Name</FormLabel>
+              <FormItem className="flex items-center gap-2">
+                <FormLabel className="mt-2">Maiden Name</FormLabel>
                 <FormControl>
                   <Input placeholder="Maiden Name" type="text" {...field} />
                 </FormControl>
@@ -348,8 +350,8 @@ export default function CustomForm() {
             control={form.control}
             name="date_of_birth"
             render={({ field }) => (
-              <FormItem>
-                <FormLabel>Date Of Birth *</FormLabel>
+              <FormItem className="flex items-center gap-2">
+                <FormLabel className="mt-2">Date Of Birth*</FormLabel>
                 <FormControl>
                   <Input placeholder="Date of Birth" type="date" {...field} />
                 </FormControl>
@@ -362,8 +364,8 @@ export default function CustomForm() {
             control={form.control}
             name="birth_time"
             render={({ field }) => (
-              <FormItem>
-                <FormLabel>Birth Time</FormLabel>
+              <FormItem className="flex items-center gap-2">
+                <FormLabel className="mt-2">Birth Time</FormLabel>
                 <FormControl>
                   <Input placeholder="Birth Time" type="time" {...field} />
                 </FormControl>
@@ -376,8 +378,8 @@ export default function CustomForm() {
             control={form.control}
             name="address_line_1"
             render={({ field }) => (
-              <FormItem className="col-span-1 md:col-span-2">
-                <FormLabel>Address Line 1</FormLabel>
+              <FormItem className="col-span-1 md:col-span-1 flex items-center">
+                <FormLabel className="mt-2">Address Line 1</FormLabel>
                 <FormControl>
                   <Textarea
                     rows={1}
@@ -394,8 +396,8 @@ export default function CustomForm() {
             control={form.control}
             name="city"
             render={({ field }) => (
-              <FormItem>
-                <FormLabel>City</FormLabel>
+              <FormItem className="flex items-center gap-2">
+                <FormLabel className="mt-2">City</FormLabel>
                 <FormControl>
                   <Input placeholder="City of Birth" type="text" {...field} />
                 </FormControl>
@@ -407,8 +409,8 @@ export default function CustomForm() {
             control={form.control}
             name="state"
             render={({ field }) => (
-              <FormItem>
-                <FormLabel>State</FormLabel>
+              <FormItem className="flex items-center gap-2">
+                <FormLabel className="mt-2">State</FormLabel>
                 <FormControl>
                   <>
                     <Input
@@ -426,8 +428,8 @@ export default function CustomForm() {
             control={form.control}
             name="country"
             render={({ field }) => (
-              <FormItem>
-                <FormLabel>Country</FormLabel>
+              <FormItem className="flex items-center gap-2">
+                <FormLabel className="mt-2">Country</FormLabel>
                 <FormControl>
                   <>
                     <Input
@@ -446,8 +448,8 @@ export default function CustomForm() {
             control={form.control}
             name="insurance_company"
             render={({ field }) => (
-              <FormItem>
-                <FormLabel>Insurance Company</FormLabel>
+              <FormItem className="flex items-center gap-2">
+                <FormLabel className="mt-2">Insurance Company</FormLabel>
                 <FormControl>
                   <Input
                     type="text"
@@ -464,8 +466,8 @@ export default function CustomForm() {
             control={form.control}
             name="insurance_member_id"
             render={({ field }) => (
-              <FormItem>
-                <FormLabel>Insurance Member ID</FormLabel>
+              <FormItem className="flex items-center gap-2">
+                <FormLabel className="mt-2">Insurance Member ID</FormLabel>
                 <FormControl>
                   <Input
                     type="text"
@@ -482,8 +484,10 @@ export default function CustomForm() {
             control={form.control}
             name="effective_date_of_insurance"
             render={({ field }) => (
-              <FormItem>
-                <FormLabel>Effective Date of Insurance</FormLabel>
+              <FormItem className="flex items-center gap-2">
+                <FormLabel className="mt-2">
+                  Effective Date of Insurance
+                </FormLabel>
                 <FormControl>
                   <Input
                     type="date"
@@ -500,8 +504,8 @@ export default function CustomForm() {
             control={form.control}
             name="referring_provider"
             render={({ field }) => (
-              <FormItem>
-                <FormLabel>Referring Provider</FormLabel>
+              <FormItem className="flex items-center gap-2">
+                <FormLabel className="mt-2">Referring Provider</FormLabel>
                 <FormControl>
                   <Input
                     placeholder="referring provider"
@@ -514,7 +518,7 @@ export default function CustomForm() {
             )}
           />
 
-          <div className="pt-4 col-span-1 md:col-span-2 text-md font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 ">
+          <div className="pt-4 col-span-1 md:col-span-1 text-md font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 ">
             Place of Birth
           </div>
 
@@ -522,8 +526,8 @@ export default function CustomForm() {
             control={form.control}
             name="city_of_birth"
             render={({ field }) => (
-              <FormItem>
-                <FormLabel>City</FormLabel>
+              <FormItem className="flex items-center gap-2">
+                <FormLabel className="mt-2">City</FormLabel>
                 <FormControl>
                   <Input placeholder="City of Birth" type="text" {...field} />
                 </FormControl>
@@ -535,8 +539,8 @@ export default function CustomForm() {
             control={form.control}
             name="state_of_birth"
             render={({ field }) => (
-              <FormItem>
-                <FormLabel>State</FormLabel>
+              <FormItem className="flex items-center gap-2">
+                <FormLabel className="mt-2">State</FormLabel>
                 <FormControl>
                   <>
                     <Input
@@ -554,8 +558,8 @@ export default function CustomForm() {
             control={form.control}
             name="country_of_birth"
             render={({ field }) => (
-              <FormItem>
-                <FormLabel>Country</FormLabel>
+              <FormItem className="flex items-center gap-2">
+                <FormLabel className="mt-2">Country</FormLabel>
                 <FormControl>
                   <>
                     <Input
@@ -570,14 +574,14 @@ export default function CustomForm() {
             )}
           />
 
-          <div className="col-span-1 md:col-span-2 mt-2"></div>
+          <div className="col-span-1 md:col-span-1 mt-2"></div>
 
           {/* <FormField
             control={form.control}
             name="mothers_maiden_name"
             render={({ field }) => (
-              <FormItem>
-                <FormLabel>Mother&apos;s Maiden Name</FormLabel>
+              <FormItem className="flex items-center gap-2">
+                <FormLabel className="mt-2">Mother&apos;s Maiden Name</FormLabel>
                 <FormControl>
                   <>
                     <Input
@@ -592,12 +596,12 @@ export default function CustomForm() {
             )}
           /> */}
 
-          <FormField
+          {/* <FormField
             control={form.control}
             name="have_siblings"
             render={({ field }) => (
-              <FormItem>
-                <FormLabel>Have Siblings</FormLabel>
+              <FormItem className="flex items-center gap-2">
+                <FormLabel className="mt-2">Have Siblings</FormLabel>
                 <FormControl>
                   <>
                     <RadioGroup defaultValue="option-one" className="flex">
@@ -615,13 +619,13 @@ export default function CustomForm() {
                 <FormMessage />
               </FormItem>
             )}
-          />
+          /> */}
           {/* <FormField
             control={form.control}
             name="record_number"
             render={({ field }) => (
-              <FormItem>
-                <FormLabel>Record Number *</FormLabel>
+              <FormItem className="flex items-center gap-2">
+                <FormLabel className="mt-2">Record Number*</FormLabel>
                 <FormControl>
                   <Input placeholder="ex. 179042" type="text" {...field} />
                 </FormControl>
@@ -633,8 +637,8 @@ export default function CustomForm() {
             control={form.control}
             name="ssn_number"
             render={({ field }) => (
-              <FormItem>
-                <FormLabel>SSN</FormLabel>
+              <FormItem className="flex items-center gap-2">
+                <FormLabel className="mt-2">SSN</FormLabel>
                 <FormControl>
                   <Input placeholder="ex. 179042" type="text" {...field} />
                 </FormControl>
@@ -646,8 +650,8 @@ export default function CustomForm() {
             control={form.control}
             name="sex"
             render={({ field }) => (
-              <FormItem>
-                <FormLabel>Birth Sex *</FormLabel>
+              <FormItem className="flex items-center gap-2">
+                <FormLabel className="mt-2">Birth Sex*</FormLabel>
                 <FormControl>
                   <Select onValueChange={field.onChange} {...field}>
                     <SelectTrigger className="w-full">
@@ -675,8 +679,8 @@ export default function CustomForm() {
             control={form.control}
             name="sexual_orientation"
             render={({ field }) => (
-              <FormItem>
-                <FormLabel>Sexual Orientation</FormLabel>
+              <FormItem className="flex items-center gap-2">
+                <FormLabel className="mt-2">Sexual Orientation</FormLabel>
                 <FormControl>
                   <Select onValueChange={field.onChange} {...field}>
                     <SelectTrigger className="w-full">
@@ -710,12 +714,12 @@ export default function CustomForm() {
             )}
           />
 
-          <FormField
+          {/* <FormField
             control={form.control}
             name="ethnicity"
             render={({ field }) => (
-              <FormItem>
-                <FormLabel>Ethnicity</FormLabel>
+              <FormItem className="flex items-center gap-2">
+                <FormLabel className="mt-2">Ethnicity</FormLabel>
                 <FormControl>
                   <Select onValueChange={field.onChange} {...field}>
                     <SelectTrigger className="w-full">
@@ -741,14 +745,14 @@ export default function CustomForm() {
                 <FormMessage />
               </FormItem>
             )}
-          />
+          /> */}
 
           <FormField
             control={form.control}
             name="affiliated_tribe"
             render={({ field }) => (
-              <FormItem>
-                <FormLabel>Affiliated Tribe</FormLabel>
+              <FormItem className="flex items-center gap-2">
+                <FormLabel className="mt-2">Affiliated Tribe</FormLabel>
                 <FormControl>
                   <Input
                     placeholder="Affiliated Tribe"
@@ -765,8 +769,8 @@ export default function CustomForm() {
             control={form.control}
             name="enrolled_as_tribe_member"
             render={({ field }) => (
-              <FormItem>
-                <FormLabel>Enrolled as Tribe Member</FormLabel>
+              <FormItem className="flex items-center gap-2">
+                <FormLabel className="mt-2">Enrolled as Tribe Member</FormLabel>
                 <FormControl>
                   <>
                     <RadioGroup defaultValue="option-one" className="flex">
@@ -790,8 +794,8 @@ export default function CustomForm() {
             control={form.control}
             name="marital_status"
             render={({ field }) => (
-              <FormItem>
-                <FormLabel>Marital Status</FormLabel>
+              <FormItem className="flex items-center gap-2">
+                <FormLabel className="mt-2">Marital Status</FormLabel>
                 <FormControl>
                   <Select onValueChange={field.onChange} {...field}>
                     <SelectTrigger className="w-full">
@@ -829,8 +833,8 @@ export default function CustomForm() {
             control={form.control}
             name="salutation"
             render={({ field }) => (
-              <FormItem>
-                <FormLabel>Salutation</FormLabel>
+              <FormItem className="flex items-center gap-2">
+                <FormLabel className="mt-2">Salutation</FormLabel>
                 <FormControl>
                   <Input placeholder="Salutation" type="text" {...field} />
                 </FormControl>
@@ -843,8 +847,8 @@ export default function CustomForm() {
             control={form.control}
             name="employer"
             render={({ field }) => (
-              <FormItem>
-                <FormLabel>Employer</FormLabel>
+              <FormItem className="flex items-center gap-2">
+                <FormLabel className="mt-2">Employer</FormLabel>
                 <FormControl>
                   <Input placeholder="Employer" type="text" {...field} />
                 </FormControl>
@@ -856,8 +860,8 @@ export default function CustomForm() {
             control={form.control}
             name="occupation"
             render={({ field }) => (
-              <FormItem>
-                <FormLabel>Occupation</FormLabel>
+              <FormItem className="flex items-center gap-2">
+                <FormLabel className="mt-2">Occupation</FormLabel>
                 <FormControl>
                   <Input placeholder="Occupation" type="text" {...field} />
                 </FormControl>
@@ -869,8 +873,8 @@ export default function CustomForm() {
             control={form.control}
             name="industry"
             render={({ field }) => (
-              <FormItem>
-                <FormLabel>Industry</FormLabel>
+              <FormItem className="flex items-center gap-2">
+                <FormLabel className="mt-2">Industry</FormLabel>
                 <FormControl>
                   <Input placeholder="Industry" type="text" {...field} />
                 </FormControl>
@@ -883,8 +887,8 @@ export default function CustomForm() {
             control={form.control}
             name="occupation_start_date"
             render={({ field }) => (
-              <FormItem>
-                <FormLabel>Occupation Start Date</FormLabel>
+              <FormItem className="flex items-center gap-2">
+                <FormLabel className="mt-2">Occupation Start Date</FormLabel>
                 <FormControl>
                   <Input type="date" {...field} />
                 </FormControl>
@@ -896,8 +900,8 @@ export default function CustomForm() {
             control={form.control}
             name="occupation_end_date"
             render={({ field }) => (
-              <FormItem>
-                <FormLabel>Occupation End Date</FormLabel>
+              <FormItem className="flex items-center gap-2">
+                <FormLabel className="mt-2">Occupation End Date</FormLabel>
                 <FormControl>
                   <Input type="date" {...field} />
                 </FormControl>
@@ -911,8 +915,8 @@ export default function CustomForm() {
             control={form.control}
             name="preferred_language"
             render={({ field }) => (
-              <FormItem>
-                <FormLabel>Preferred Language</FormLabel>
+              <FormItem className="flex items-center gap-2">
+                <FormLabel className="mt-2">Preferred Language</FormLabel>
                 <FormControl>
                   <Select onValueChange={field.onChange} {...field}>
                     <SelectTrigger className="w-full">
@@ -942,8 +946,8 @@ export default function CustomForm() {
             control={form.control}
             name="preferred_clinic"
             render={({ field }) => (
-              <FormItem>
-                <FormLabel>Preferred Clinic</FormLabel>
+              <FormItem className="flex items-center gap-2">
+                <FormLabel className="mt-2">Preferred Clinic</FormLabel>
                 <FormControl>
                   <Select onValueChange={field.onChange} {...field}>
                     <SelectTrigger className="w-full">
@@ -973,8 +977,8 @@ export default function CustomForm() {
             control={form.control}
             name="status"
             render={({ field }) => (
-              <FormItem>
-                <FormLabel>Status</FormLabel>
+              <FormItem className="flex items-center gap-2">
+                <FormLabel className="mt-2">Status</FormLabel>
                 <FormControl>
                   <Select onValueChange={field.onChange} {...field}>
                     <SelectTrigger className="w-full">
@@ -1002,8 +1006,8 @@ export default function CustomForm() {
             control={form.control}
             name="date_of_death"
             render={({ field }) => (
-              <FormItem>
-                <FormLabel>Date Of Death</FormLabel>
+              <FormItem className="flex items-center gap-2">
+                <FormLabel className="mt-2">Date Of Death</FormLabel>
                 <FormControl>
                   <Input type="date" {...field} />
                 </FormControl>
@@ -1016,8 +1020,8 @@ export default function CustomForm() {
             control={form.control}
             name="cause_of_death"
             render={({ field }) => (
-              <FormItem className="col-span-1 md:col-span-2">
-                <FormLabel>Cause Of Death</FormLabel>
+              <FormItem className="col-span-1 md:col-span-1">
+                <FormLabel className="mt-2">Cause Of Death</FormLabel>
                 <FormControl>
                   <Textarea rows={4} placeholder="Cause of Death" {...field} />
                 </FormControl>
@@ -1026,7 +1030,7 @@ export default function CustomForm() {
             )}
           /> */}
 
-          {/* <div className="col-span-1 md:col-span-2 flex flex-col gap-y-5">
+          {/* <div className="col-span-1 md:col-span-1 flex flex-col gap-y-5">
             <div className="pt-2 text-md font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
               Advance Directives
             </div> */}
@@ -1035,8 +1039,8 @@ export default function CustomForm() {
               control={form.control}
               name="living_will"
               render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Living Will</FormLabel>
+                <FormItem className="flex items-center gap-2">
+                  <FormLabel className="mt-2">Living Will</FormLabel>
                   <FormControl>
                     <>
                       <RadioGroup
@@ -1066,8 +1070,8 @@ export default function CustomForm() {
               control={form.control}
               name="durable_power_of_attorney"
               render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Durable Power of Attorney</FormLabel>
+                <FormItem className="flex items-center gap-2">
+                  <FormLabel className="mt-2">Durable Power of Attorney</FormLabel>
                   <FormControl>
                     <>
                       <RadioGroup
@@ -1097,8 +1101,8 @@ export default function CustomForm() {
               control={form.control}
               name="dnr"
               render={({ field }) => (
-                <FormItem>
-                  <FormLabel>DNR</FormLabel>
+                <FormItem className="flex items-center gap-2">
+                  <FormLabel className="mt-2">DNR</FormLabel>
                   <FormControl>
                     <>
                       <RadioGroup
@@ -1129,8 +1133,8 @@ export default function CustomForm() {
               control={form.control}
               name="last_verified"
               render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Last Verified</FormLabel>
+                <FormItem className="flex items-center gap-2">
+                  <FormLabel className="mt-2">Last Verified</FormLabel>
                   <FormControl>
                     <Input type="date" {...field} />
                   </FormControl>
@@ -1144,8 +1148,8 @@ export default function CustomForm() {
             control={form.control}
             name="benefit_status"
             render={({ field }) => (
-              <FormItem>
-                <FormLabel>Benefit Status</FormLabel>
+              <FormItem className="flex items-center gap-2">
+                <FormLabel className="mt-2">Benefit Status</FormLabel>
                 <FormControl>
                   <Input type="text" {...field} />
                 </FormControl>
@@ -1158,8 +1162,8 @@ export default function CustomForm() {
             control={form.control}
             name="photo"
             render={({ field }) => (
-              <FormItem>
-                <FormLabel>Photo</FormLabel>
+              <FormItem className="flex items-center gap-2">
+                <FormLabel className="mt-2">Photo</FormLabel>
                 <FormControl>
                   <Input type="file" />
                 </FormControl>
@@ -1172,7 +1176,7 @@ export default function CustomForm() {
             control={form.control}
             name="test_patient"
             render={({ field }) => (
-              <FormItem className="flex mt-5 col-span-1 md:col-span-2">
+              <FormItem className="flex mt-5 col-span-1 md:col-span-1">
                 <FormControl className="h-full flex items-center content-center">
                   <CheckboxWithText
                     checked={field.value}
