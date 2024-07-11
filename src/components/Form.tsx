@@ -180,7 +180,7 @@ export default function CustomForm() {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="max-w-lg  mx-auto p-6 shadow-md rounded space-y-8 text-xl"
+        className="max-w-lg  mx-auto m-6 p-6 shadow-md dark:shadow-emerald-50 dark:shadow-sm rounded space-y-8 text-xl"
       >
         <div className="grid grid-cols-1  gap-4">
           <FormField
