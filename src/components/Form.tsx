@@ -182,56 +182,6 @@ export default function CustomForm() {
                       </SelectGroup>
                     </SelectContent>
                   </Select>
-                  {/* <Popover open={open}  onOpenChange={setOpen} {...field}>
-                    <PopoverTrigger asChild>
-                      <Button
-                        variant="outline"
-                        role="combobox"
-                        aria-expanded={open}
-                        className="w-[200px] justify-between"
-                      >
-                        {value
-                          ? referring_providers.find(
-                              (referring_provider) =>
-                                referring_provider.name === value
-                            )?.name
-                          : "Select referring_provider..."}
-                        <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                      </Button>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-[200px] p-0">
-                      <Command>
-                        <CommandInput placeholder="Search referring_provider..." />
-                        <CommandEmpty>
-                          No referring_provider found.
-                        </CommandEmpty>
-                        <CommandGroup>
-                          {referring_providers.map((referring_provider) => (
-                            <CommandItem
-                              key={referring_provider.name}
-                              value={referring_provider.name}
-                              onSelect={(currentValue) => {
-                                setValue(
-                                  currentValue === value ? "" : currentValue
-                                );
-                                setOpen(false);
-                              }}
-                            >
-                              <Check
-                                className={cn(
-                                  "mr-2 h-4 w-4",
-                                  value === referring_provider.name
-                                    ? "opacity-100"
-                                    : "opacity-0"
-                                )}
-                              />
-                              {referring_provider.name}
-                            </CommandItem>
-                          ))}
-                        </CommandGroup>
-                      </Command>
-                    </PopoverContent>
-                  </Popover> */}
                 </FormControl>
                 <FormMessage />
               </FormItem>

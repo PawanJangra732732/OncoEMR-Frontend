@@ -160,7 +160,7 @@ export const referring_providers = [
     specialty: "Internal Medicine",
     faxPhone: "(212)486-0640",
     officePhone: "(212)758-3590",
-    "Other phone": "(917)372-2387",
+    OtherPhone : "(917)372-2387",
   },
   {
     name: "BASKIN, CINDY",
@@ -383,7 +383,7 @@ export const referring_providers = [
     specialty: "Internal Medicine",
     faxPhone: "(212)249-4874",
     officePhone: "(212)249-3720",
-    "Other phone": "(646)209-9075",
+    OtherPhone : "(646)209-9075",
   },
   {
     name: "Messana, Ida",
@@ -492,7 +492,7 @@ export const referring_providers = [
     specialty: "Internal Medicine",
     faxPhone: "(646)553-5646",
     officePhone: "(212)390-1656",
-    "Other phone": "AFTERCARE@CITYMD.NET",
+    OtherPhone : "AFTERCARE@CITYMD.NET",
   },
   {
     name: "LOEWENSTEIN, JOANNA",
@@ -531,9 +531,9 @@ export const referring_providers = [
     officePhone: "(212)510-7020",
   },
   {
+    faxPhone: "(718)299-2102",
     name: "RAMIREZ, JULIO",
     specialty: "INTERNAL MEDICINE",
-    faxPhone: "(718)299-2102",
     officePhone: "(718)299-2100",
   },
   {
@@ -637,7 +637,7 @@ export const referring_providers = [
     specialty: "Internal Medicine",
     faxPhone: "(212)627-8389",
     officePhone: "(212)675-2997",
-    "Other phone": "(212)523-8417",
+    OtherPhone : "(212)523-8417",
   },
   {
     name: "GRINGAS, LAURA",
@@ -704,7 +704,7 @@ export const referring_providers = [
     specialty: "Internal Medicine",
     faxPhone: "(212)332-3033",
     officePhone: "(212)332-3665",
-    "Other phone": "(212)332-3700",
+    OtherPhone : "(212)332-3700",
   },
   {
     name: "BOLIC, MARTIN",
@@ -717,7 +717,7 @@ export const referring_providers = [
     specialty: "Internal Medicine",
     faxPhone: "(212)606-1605",
     officePhone: "(212)606-1620",
-    "Other phone": "buchalterm@hss.edu",
+    OtherPhone : "buchalterm@hss.edu",
   },
   {
     name: "CHANG, MELANIE",
@@ -748,14 +748,14 @@ export const referring_providers = [
     specialty: "Internal Medicine",
     faxPhone: "(212)288-5941",
     officePhone: "(212)517-5060",
-    "Other phone": "MJ@MJMD.COM",
+    OtherPhone : "MJ@MJMD.COM",
   },
   {
     name: "KOLLAKUZHIYIL, MARY",
     specialty: "Internal Medicine",
     faxPhone: "(212)606-1605",
     officePhone: "(212)606-1620",
-    "Other phone": "kollakuzhiyilk@hss.edu",
+    OtherPhone : "kollakuzhiyilk@hss.edu",
   },
   {
     name: "KRAMPS NP, MELISSA",
@@ -876,7 +876,7 @@ export const referring_providers = [
     specialty: "Internal Medicine",
     faxPhone: "(212)746-8439",
     officePhone: "(212)746-1582",
-    "Other phone": "(917)313-5420",
+    OtherPhone : "(917)313-5420",
     faxPhone: "(212)746-1578",
   },
   {
@@ -902,7 +902,7 @@ export const referring_providers = [
     specialty: "Internal Medicine",
     faxPhone: "(212)734-3880",
     officePhone: "(212)734-6464",
-    "Other phone": "(212)734-6820",
+    OtherPhone : "(212)734-6820",
   },
   {
     name: "DUBIN, RICHARD",
@@ -927,7 +927,7 @@ export const referring_providers = [
     specialty: "Internal Medicine",
     faxPhone: "(646)962-0415",
     officePhone: "(646)962-7800",
-    "Other phone": "(917)414-2709",
+    OtherPhone : "(917)414-2709",
   },
   {
     name: "KURTH, REBECCA",
@@ -982,7 +982,7 @@ export const referring_providers = [
     specialty: "Internal Medicine",
     faxPhone: "(212)288-1572",
     officePhone: "(212)606-1852",
-    "Other phone": "MCCALLJ@HSS.EDU",
+    OtherPhone : "MCCALLJ@HSS.EDU",
   },
   {
     name: "HALL-ROSS, SANDRA M",
@@ -1031,7 +1031,7 @@ export const referring_providers = [
     specialty: "Internal Medicine",
     faxPhone: "(212)396-9510",
     officePhone: "(212)396-9500",
-    "Other phone": "MAYOPARROFFICE@72MED.COM",
+    OtherPhone : "MAYOPARROFFICE@72MED.COM",
   },
   {
     name: "SIEGEL, STEPHEN D",
@@ -1074,7 +1074,7 @@ export const referring_providers = [
     specialty: "Internal Medicine",
     faxPhone: "(212)746-0354",
     officePhone: "(212)746-4071",
-    "Other phone": "(646)531-8424",
+    OtherPhone : "(646)531-8424",
   },
   {
     name: "LOFASO, VERONICA E",
@@ -1117,7 +1117,7 @@ export const referring_providers = [
     specialty: "Internal Medicine",
     faxPhone: "(212)606-1605",
     officePhone: "(212)606-1620",
-    "Other phone": "hollomonw@hss.edu",
+    OtherPhone : "hollomonw@hss.edu",
   },
   {
     name: "SUOZZI, WILLIAM",
