@@ -14,7 +14,9 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { referring_providers } from "@/app/data/referring-provider";
+import { referring_providers } from "@/app/data/referring-providers";
+import TextField from "@mui/material/TextField";
+import Autocomplete from "@mui/material/Autocomplete";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import {
@@ -84,8 +86,8 @@ const formSchema = z.object({
 });
 
 export default function CustomForm() {
-  const [open, setOpen] = React.useState(false);
-  const [value, setValue] = React.useState("");
+  const [popoverOpen, setPopoverOpen] = React.useState(false);
+  const [name, setName] = React.useState("");
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -97,7 +99,7 @@ export default function CustomForm() {
       preferred_contact_method: "",
       date_of_birth: "",
       sex: "",
-      referring_provider: "",
+      referring_provider: "select a referring provider",
       address_line_1: "",
       city: "",
       state: "",
@@ -119,43 +121,47 @@ export default function CustomForm() {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="border-black-100 border-[1px] max-w-5xl mx-auto p-4 md:p-6 shadow-md dark:shadow-emerald-50 dark:shadow-sm rounded space-y-8 text-xl"
+        className="border-black-100 border-[1px] w-full max-w-5xl mx-auto p-4 md:p-6 shadow-md dark:shadow-emerald-50 dark:shadow-sm rounded space-y-8 text-xl"
       >
-        <div className="grid grid-cols-1 md:grid-cols-2  gap-4 md:gap-x-8 md:gap-y-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-x-8 md:gap-y-4">
           <FormField
             control={form.control}
             name="physician"
             render={({ field }) => (
               <FormItem className="col-span-1 md:col-span-1 flex items-center gap-2">
-                <FormLabel className="mt-2 w-32">Physician</FormLabel>
-                <FormControl>
-                  <Select onValueChange={field.onChange} {...field}>
-                    <SelectTrigger className="w-full">
-                      <SelectValue placeholder="Select Physician" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectGroup>
-                        <SelectLabel>Select your Physician</SelectLabel>
-                        <SelectItem value="Ali, NP, Jessica Fay">
-                          Ali, NP, Jessica Fay
-                        </SelectItem>
-                        <SelectItem value="Gelfand, MD, Robert">
-                          Gelfand, MD, Robert
-                        </SelectItem>
-                        <SelectItem value="Ghuman, MD, Damanjit">
-                          Ghuman, MD, Damanjit
-                        </SelectItem>
-                        <SelectItem value="Kramer, MD, Rachel">
-                          Kramer, MD, Rachel
-                        </SelectItem>
-                        <SelectItem value="Livescu, NP, Nicole">
-                          Livescu, NP, Nicole
-                        </SelectItem>
-                      </SelectGroup>
-                    </SelectContent>
-                  </Select>
-                </FormControl>
-                <FormMessage />
+                <FormLabel className="w-32">Physician</FormLabel>
+                <div className="w-full">
+                  <FormControl>
+                    <Select onValueChange={field.onChange} {...field}>
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Select Physician" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          <SelectLabel>Select your Physician</SelectLabel>
+                          <SelectItem value="Ali, NP, Jessica Fay">
+                            Ali, NP, Jessica Fay
+                          </SelectItem>
+                          <SelectItem value="Gelfand, MD, Robert">
+                            Gelfand, MD, Robert
+                          </SelectItem>
+                          <SelectItem value="Ghuman, MD, Damanjit">
+                            Ghuman, MD, Damanjit
+                          </SelectItem>
+                          <SelectItem value="Kramer, MD, Rachel">
+                            Kramer, MD, Rachel
+                          </SelectItem>
+                          <SelectItem value="Livescu, NP, Nicole">
+                            Livescu, NP, Nicole
+                          </SelectItem>
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                  </FormControl>
+                  <div className="h-2 block">
+                    <FormMessage className="mt-1" />
+                  </div>
+                </div>
               </FormItem>
             )}
           />
@@ -164,26 +170,33 @@ export default function CustomForm() {
             control={form.control}
             name="referring_provider"
             render={({ field }) => (
-              <FormItem className="flex items-center gap-2">
-                <FormLabel className="mt-2 w-32">Referring Provider</FormLabel>
-                <FormControl>
-                  <Select onValueChange={field.onChange} {...field}>
-                    <SelectTrigger className="w-full">
-                      <SelectValue placeholder="Referring Provider" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectGroup>
-                        <SelectLabel>Referring Provider</SelectLabel>
-                        {referring_providers.map(({ name }, i) => (
-                          <SelectItem key={i} value={name}>
-                            {name}
-                          </SelectItem>
-                        ))}
-                      </SelectGroup>
-                    </SelectContent>
-                  </Select>
-                </FormControl>
-                <FormMessage />
+              <FormItem className="col-span-1 md:col-span-1 flex items-center gap-2">
+                <FormLabel className="w-32">Referring Provider</FormLabel>
+                <div className="w-full">
+                  <FormControl>
+                    <Autocomplete
+                      value={field.value}
+                      onChange={(event, newValue) => {
+                        field.onChange(newValue);
+                      }}
+                      disablePortal
+                      id="referring_provider"
+                      options={referring_providers}
+                      getOptionLabel={(option) => option}
+                      sx={{ width: "100%" }}
+                      renderInput={(params) => (
+                        <TextField
+                          variant="outlined"
+                          {...params}
+                          size="small"
+                        />
+                      )}
+                    />
+                  </FormControl>
+                  <div className="h-2 block">
+                    <FormMessage className="mt-1" />
+                  </div>
+                </div>
               </FormItem>
             )}
           />
@@ -192,12 +205,16 @@ export default function CustomForm() {
             control={form.control}
             name="first_name"
             render={({ field }) => (
-              <FormItem className="flex items-center gap-2">
-                <FormLabel className="mt-2 w-32">First Name*</FormLabel>
-                <FormControl>
-                  <Input placeholder="first name" type="text" {...field} />
-                </FormControl>
-                <FormMessage />
+              <FormItem className="col-span-1 md:col-span-1 flex items-center gap-2">
+                <FormLabel className="w-32">First Name*</FormLabel>
+                <div className="w-full">
+                  <FormControl>
+                    <Input placeholder="first name" type="text" {...field} />
+                  </FormControl>
+                  <div className="h-2 block">
+                    <FormMessage className="mt-1" />
+                  </div>
+                </div>
               </FormItem>
             )}
           />
@@ -206,12 +223,16 @@ export default function CustomForm() {
             control={form.control}
             name="middle_name"
             render={({ field }) => (
-              <FormItem className="flex items-center gap-2">
-                <FormLabel className="mt-2 w-32">Middle Name</FormLabel>
-                <FormControl>
-                  <Input placeholder="middle name" type="text" {...field} />
-                </FormControl>
-                <FormMessage />
+              <FormItem className="col-span-1 md:col-span-1 flex items-center gap-2">
+                <FormLabel className="w-32">Middle Name</FormLabel>
+                <div className="w-full">
+                  <FormControl>
+                    <Input placeholder="middle name" type="text" {...field} />
+                  </FormControl>
+                  <div className="h-2 block">
+                    <FormMessage className="mt-1" />
+                  </div>
+                </div>
               </FormItem>
             )}
           />
@@ -220,12 +241,16 @@ export default function CustomForm() {
             control={form.control}
             name="last_name"
             render={({ field }) => (
-              <FormItem className="flex items-center gap-2">
-                <FormLabel className="mt-2 w-32">Last Name*</FormLabel>
-                <FormControl>
-                  <Input placeholder="last name" type="text" {...field} />
-                </FormControl>
-                <FormMessage />
+              <FormItem className="col-span-1 md:col-span-1 flex items-center gap-2">
+                <FormLabel className="w-32">Last Name*</FormLabel>
+                <div className="w-full">
+                  <FormControl>
+                    <Input placeholder="last name" type="text" {...field} />
+                  </FormControl>
+                  <div className="h-2 block">
+                    <FormMessage className="mt-1" />
+                  </div>
+                </div>
               </FormItem>
             )}
           />
@@ -234,12 +259,16 @@ export default function CustomForm() {
             control={form.control}
             name="mobile_number"
             render={({ field }) => (
-              <FormItem className="flex items-center gap-2">
-                <FormLabel className="mt-2 w-32">Mobile Number</FormLabel>
-                <FormControl>
-                  <Input placeholder="Mobile Number" type="text" {...field} />
-                </FormControl>
-                <FormMessage />
+              <FormItem className="col-span-1 md:col-span-1 flex items-center gap-2">
+                <FormLabel className="w-32">Mobile Number</FormLabel>
+                <div className="w-full">
+                  <FormControl>
+                    <Input placeholder="Mobile Number" type="text" {...field} />
+                  </FormControl>
+                  <div className="h-2 block">
+                    <FormMessage className="mt-1" />
+                  </div>
+                </div>
               </FormItem>
             )}
           />
@@ -248,12 +277,16 @@ export default function CustomForm() {
             control={form.control}
             name="email"
             render={({ field }) => (
-              <FormItem className="flex items-center gap-2">
-                <FormLabel className="mt-2 w-32">Email</FormLabel>
-                <FormControl>
-                  <Input placeholder="email" type="text" {...field} />
-                </FormControl>
-                <FormMessage />
+              <FormItem className="col-span-1 md:col-span-1 flex items-center gap-2">
+                <FormLabel className="w-32">Email</FormLabel>
+                <div className="w-full">
+                  <FormControl>
+                    <Input placeholder="email" type="text" {...field} />
+                  </FormControl>
+                  <div className="h-2 block">
+                    <FormMessage className="mt-1" />
+                  </div>
+                </div>
               </FormItem>
             )}
           />
@@ -262,27 +295,31 @@ export default function CustomForm() {
             control={form.control}
             name="preferred_contact_method"
             render={({ field }) => (
-              <FormItem className="flex items-center gap-2">
-                <FormLabel className="mt-2 w-32">
+              <FormItem className="col-span-1 md:col-span-1 flex items-center gap-2">
+                <FormLabel className="w-32">
                   Preferred Contact Method*
                 </FormLabel>
-                <FormControl>
-                  <Select onValueChange={field.onChange} {...field}>
-                    <SelectTrigger className="w-full">
-                      <SelectValue placeholder="select any one" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectGroup>
-                        <SelectLabel>
-                          Select your Preferred Contact Method
-                        </SelectLabel>
-                        <SelectItem value="phone">Phone</SelectItem>
-                        <SelectItem value="email">Email</SelectItem>
-                      </SelectGroup>
-                    </SelectContent>
-                  </Select>
-                </FormControl>
-                <FormMessage />
+                <div className="w-full">
+                  <FormControl>
+                    <Select onValueChange={field.onChange} {...field}>
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="select any one" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          <SelectLabel>
+                            Select your Preferred Contact Method
+                          </SelectLabel>
+                          <SelectItem value="phone">Phone</SelectItem>
+                          <SelectItem value="email">Email</SelectItem>
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                  </FormControl>
+                  <div className="h-2 block">
+                    <FormMessage className="mt-1" />
+                  </div>
+                </div>
               </FormItem>
             )}
           />
@@ -291,26 +328,30 @@ export default function CustomForm() {
             control={form.control}
             name="sex"
             render={({ field }) => (
-              <FormItem className="flex items-center gap-2">
-                <FormLabel className="mt-2 w-32">Birth Sex*</FormLabel>
-                <FormControl>
-                  <Select onValueChange={field.onChange} {...field}>
-                    <SelectTrigger className="w-full">
-                      <SelectValue placeholder="Select your Birth Sex" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectGroup>
-                        <SelectLabel>Select your Birth Sex</SelectLabel>
-                        <SelectItem value="Male">Male</SelectItem>
-                        <SelectItem value="Female">Female</SelectItem>
-                        <SelectItem value="prefer-not-to-say">
-                          Prefer Not to Say
-                        </SelectItem>
-                      </SelectGroup>
-                    </SelectContent>
-                  </Select>
-                </FormControl>
-                <FormMessage />
+              <FormItem className="col-span-1 md:col-span-1 flex items-center gap-2">
+                <FormLabel className="w-32">Birth Sex*</FormLabel>
+                <div className="w-full">
+                  <FormControl>
+                    <Select onValueChange={field.onChange} {...field}>
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Select your Birth Sex" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          <SelectLabel>Select your Birth Sex</SelectLabel>
+                          <SelectItem value="Male">Male</SelectItem>
+                          <SelectItem value="Female">Female</SelectItem>
+                          <SelectItem value="prefer-not-to-say">
+                            Prefer Not to Say
+                          </SelectItem>
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                  </FormControl>
+                  <div className="h-2 block">
+                    <FormMessage className="mt-1" />
+                  </div>
+                </div>
               </FormItem>
             )}
           />
@@ -319,12 +360,16 @@ export default function CustomForm() {
             control={form.control}
             name="date_of_birth"
             render={({ field }) => (
-              <FormItem className="flex items-center gap-2">
-                <FormLabel className="mt-2 w-32">Date Of Birth*</FormLabel>
-                <FormControl>
-                  <Input placeholder="Date of Birth" type="date" {...field} />
-                </FormControl>
-                <FormMessage />
+              <FormItem className="col-span-1 md:col-span-1 flex items-center gap-2">
+                <FormLabel className="w-32">Date Of Birth*</FormLabel>
+                <div className="w-full">
+                  <FormControl>
+                    <Input placeholder="Date of Birth" type="date" {...field} />
+                  </FormControl>
+                  <div className="h-2 block">
+                    <FormMessage className="mt-1" />
+                  </div>
+                </div>
               </FormItem>
             )}
           />
@@ -333,16 +378,20 @@ export default function CustomForm() {
             control={form.control}
             name="address_line_1"
             render={({ field }) => (
-              <FormItem className="col-span-1 md:col-span-1 flex gap-2 items-center">
-                <FormLabel className="mt-2 w-32">Address Line 1</FormLabel>
-                <FormControl>
-                  <Textarea
-                    rows={1}
-                    placeholder="your full Address here..."
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
+              <FormItem className="col-span-1 md:col-span-1 flex items-center gap-2">
+                <FormLabel className="w-32">Address Line 1</FormLabel>
+                <div className="w-full">
+                  <FormControl>
+                    <Textarea
+                      rows={1}
+                      placeholder="your full Address here..."
+                      {...field}
+                    />
+                  </FormControl>
+                  <div className="h-2 block">
+                    <FormMessage className="mt-1" />
+                  </div>
+                </div>
               </FormItem>
             )}
           />
@@ -351,12 +400,16 @@ export default function CustomForm() {
             control={form.control}
             name="city"
             render={({ field }) => (
-              <FormItem className="flex items-center gap-2">
-                <FormLabel className="mt-2 w-32">City</FormLabel>
-                <FormControl>
-                  <Input placeholder="City of Birth" type="text" {...field} />
-                </FormControl>
-                <FormMessage />
+              <FormItem className="col-span-1 md:col-span-1 flex items-center gap-2">
+                <FormLabel className="w-32">City</FormLabel>
+                <div className="w-full">
+                  <FormControl>
+                    <Input placeholder="City of Birth" type="text" {...field} />
+                  </FormControl>
+                  <div className="h-2 block">
+                    <FormMessage className="mt-1" />
+                  </div>
+                </div>
               </FormItem>
             )}
           />
@@ -365,18 +418,20 @@ export default function CustomForm() {
             control={form.control}
             name="state"
             render={({ field }) => (
-              <FormItem className="flex items-center gap-2">
-                <FormLabel className="mt-2 w-32">State</FormLabel>
-                <FormControl>
-                  <>
+              <FormItem className="col-span-1 md:col-span-1 flex items-center gap-2">
+                <FormLabel className="w-32">State</FormLabel>
+                <div className="w-full">
+                  <FormControl>
                     <Input
                       placeholder="State of Birth"
                       type="text"
                       {...field}
                     />
-                  </>
-                </FormControl>
-                <FormMessage />
+                  </FormControl>
+                  <div className="h-2 block">
+                    <FormMessage className="mt-1" />
+                  </div>
+                </div>
               </FormItem>
             )}
           />
@@ -385,16 +440,20 @@ export default function CustomForm() {
             control={form.control}
             name="insurance_company"
             render={({ field }) => (
-              <FormItem className="flex items-center gap-2">
-                <FormLabel className="mt-2 w-32">Insurance Company</FormLabel>
-                <FormControl>
-                  <Input
-                    type="text"
-                    placeholder="Insurance Company full name"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
+              <FormItem className="col-span-1 md:col-span-1 flex items-center gap-2">
+                <FormLabel className="w-32">Insurance Company</FormLabel>
+                <div className="w-full">
+                  <FormControl>
+                    <Input
+                      type="text"
+                      placeholder="Insurance Company full name"
+                      {...field}
+                    />
+                  </FormControl>
+                  <div className="h-2 block">
+                    <FormMessage className="mt-1" />
+                  </div>
+                </div>
               </FormItem>
             )}
           />
@@ -403,16 +462,20 @@ export default function CustomForm() {
             control={form.control}
             name="insurance_member_id"
             render={({ field }) => (
-              <FormItem className="flex items-center gap-2">
-                <FormLabel className="mt-2 w-32">Insurance Member ID</FormLabel>
-                <FormControl>
-                  <Input
-                    type="text"
-                    placeholder="Insurance Member ID"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
+              <FormItem className="col-span-1 md:col-span-1 flex items-center gap-2">
+                <FormLabel className="w-32">Insurance Member ID</FormLabel>
+                <div className="w-full">
+                  <FormControl>
+                    <Input
+                      type="text"
+                      placeholder="Insurance Member ID"
+                      {...field}
+                    />
+                  </FormControl>
+                  <div className="h-2 block">
+                    <FormMessage className="mt-1" />
+                  </div>
+                </div>
               </FormItem>
             )}
           />
@@ -421,23 +484,25 @@ export default function CustomForm() {
             control={form.control}
             name="effective_date_of_insurance"
             render={({ field }) => (
-              <FormItem className="flex items-center gap-2">
-                <FormLabel className="mt-2 w-32">
+              <FormItem className="col-span-1 md:col-span-1 flex items-center gap-2">
+                <FormLabel className="w-32">
                   Effective Date of Insurance
                 </FormLabel>
-                <FormControl>
-                  <Input
-                    type="date"
-                    placeholder="Effective Date of Insurance"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
+                <div className="w-full">
+                  <FormControl>
+                    <Input
+                      type="date"
+                      placeholder="Effective Date of Insurance"
+                      {...field}
+                    />
+                  </FormControl>
+                  <div className="h-2 block">
+                    <FormMessage className="mt-1" />
+                  </div>
+                </div>
               </FormItem>
             )}
           />
-
-          <div className="col-span-1 md:col-span-1 mt-2"></div>
         </div>
         <div className="mt-4">
           <Button type="submit">Submit</Button>
