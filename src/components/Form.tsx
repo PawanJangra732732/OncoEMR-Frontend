@@ -119,7 +119,7 @@ export default function CustomForm() {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="max-w-5xl  mx-auto m-6 p-6 shadow-md dark:shadow-emerald-50 dark:shadow-sm rounded space-y-8 text-xl"
+        className="border-black-100 border-[1px] max-w-5xl mx-auto p-4 md:p-6 shadow-md dark:shadow-emerald-50 dark:shadow-sm rounded space-y-8 text-xl"
       >
         <div className="grid grid-cols-1 md:grid-cols-2  gap-4 md:gap-x-8 md:gap-y-4">
           <FormField
