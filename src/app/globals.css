@@ -1,3 +1,12 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.css-1d3z3hw-MuiOutlinedInput-notchedOutline {
+  border-color: #e4e4e7 !important;
+  border-radius: 6px;
+}
+
+html.dark .css-19qh8xo-MuiInputBase-input-MuiOutlinedInput-input {
+  color: white;
+}
