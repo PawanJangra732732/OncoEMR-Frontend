@@ -111,7 +111,7 @@ export default function CustomForm() {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
-      const response = await axios.post(BACKEND_URL, values);
+      const response = await axios.post(BACKEND_URL + "/api/patients/", values);
       console.log("Form submitted successfully:", response.data);
     } catch (error) {
       console.error("Error submitting form:", error);
