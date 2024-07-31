@@ -7,6 +7,16 @@
   border-radius: 6px;
 }
 
+html.dark .css-1d3z3hw-MuiOutlinedInput-notchedOutline {
+  border-color: #5e5e5e !important;
+  border-radius: 6px;
+  background: #02061780;
+}
+
 html.dark .css-19qh8xo-MuiInputBase-input-MuiOutlinedInput-input {
   color: white;
+}
+
+.MuiSvgIcon-root {
+  color: #5e5e5e;
 }
