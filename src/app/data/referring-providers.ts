@@ -1,5 +1,4 @@
 export const referring_providers: string[] = [
-  "select a referring provider",
   "ACOSTA, ALBERT",
   "BARKAN, ANATOLE",
   "DONAHUE, ALETHEIA",
