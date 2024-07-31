@@ -23,10 +23,14 @@ export function Combobox({
   options,
   value,
   setValue,
+  searchText = "Search Referring Provider...",
+  searchEmptyText = "No Referring Provider found.",
 }: {
   options: string[];
   value: any;
   setValue: any;
+  searchText?: string;
+  searchEmptyText?: string;
 }) {
   const [open, setOpen] = React.useState(false);
 
@@ -41,15 +45,15 @@ export function Combobox({
         >
           {value
             ? options.find((framework) => framework === value)
-            : "Search Referring Provider..."}
+            : searchText}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
       <PopoverContent data-disabled={false} className="w-full p-0">
         <Command data-disabled={false} disablePointerSelection={false}>
-          <CommandInput placeholder="Search framework..." />
+          <CommandInput placeholder={searchText} />
           <CommandList aria-disabled="true">
-            <CommandEmpty>No Referring Provider found.</CommandEmpty>
+            <CommandEmpty>{searchEmptyText}</CommandEmpty>
             <CommandGroup aria-disabled="false">
               {options.map((framework) => (
                 <CommandItem
