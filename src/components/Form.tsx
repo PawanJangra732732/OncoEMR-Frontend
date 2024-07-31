@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -15,22 +14,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { referring_providers } from "@/app/data/referring-providers";
-import TextField from "@mui/material/TextField";
-import Autocomplete from "@mui/material/Autocomplete";
-import { Label } from "@/components/ui/label";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-} from "@/components/ui/command";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+
 import {
   Select,
   SelectContent,
@@ -41,12 +25,11 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { CheckboxWithText } from "@/components/check-box";
 import axios from "axios";
+
 import React from "react";
-import { Check, ChevronsUpDown } from "lucide-react";
-import { cn } from "@/lib/utils";
 import { BACKEND_URL } from "@/lib/env";
+import { Combobox } from "./combobox";
 
 const formSchema = z.object({
   physician: z.string().min(2, { message: "please select your physician" }),
@@ -80,14 +63,12 @@ const formSchema = z.object({
     .min(2, "please provide a valid insurance member id"),
   effective_date_of_insurance: z.string().date().optional(),
   preferred_contact_method: z.string(),
-  referring_provider: z.string(),
+  referring_provider: z.string().min(1, "please select a referring provider"),
   date_of_birth: z.string().date(),
   sex: z.string().min(2, "field is required"),
 });
 
 export default function CustomForm() {
-  const [popoverOpen, setPopoverOpen] = React.useState(false);
-  const [name, setName] = React.useState("");
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -99,7 +80,7 @@ export default function CustomForm() {
       preferred_contact_method: "",
       date_of_birth: "",
       sex: "",
-      referring_provider: "select a referring provider",
+      referring_provider: "",
       address_line_1: "",
       city: "",
       state: "",
@@ -174,23 +155,10 @@ export default function CustomForm() {
                 <FormLabel className="w-32">Referring Provider</FormLabel>
                 <div className="w-full">
                   <FormControl>
-                    <Autocomplete
-                      value={field.value}
-                      onChange={(event, newValue) => {
-                        field.onChange(newValue);
-                      }}
-                      disablePortal
-                      id="referring_provider"
+                    <Combobox
                       options={referring_providers}
-                      getOptionLabel={(option) => option}
-                      sx={{ width: "100%" }}
-                      renderInput={(params) => (
-                        <TextField
-                          variant="outlined"
-                          {...params}
-                          size="small"
-                        />
-                      )}
+                      value={field.value}
+                      setValue={field.onChange}
                     />
                   </FormControl>
                   <div className="h-2 block">
@@ -404,7 +372,7 @@ export default function CustomForm() {
                 <FormLabel className="w-32">City</FormLabel>
                 <div className="w-full">
                   <FormControl>
-                    <Input placeholder="City of Birth" type="text" {...field} />
+                    <Input placeholder="City" type="text" {...field} />
                   </FormControl>
                   <div className="h-2 block">
                     <FormMessage className="mt-1" />
@@ -422,11 +390,7 @@ export default function CustomForm() {
                 <FormLabel className="w-32">State</FormLabel>
                 <div className="w-full">
                   <FormControl>
-                    <Input
-                      placeholder="State of Birth"
-                      type="text"
-                      {...field}
-                    />
+                    <Input placeholder="State" type="text" {...field} />
                   </FormControl>
                   <div className="h-2 block">
                     <FormMessage className="mt-1" />
