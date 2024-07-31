@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { referring_providers } from "@/app/data/referring-providers";
+import { State, City } from "country-state-city";
 
 import {
   Select,
@@ -27,7 +28,7 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import axios from "axios";
 
-import React from "react";
+import React, { useState } from "react";
 import { BACKEND_URL } from "@/lib/env";
 import { Combobox } from "./combobox";
 
@@ -53,7 +54,7 @@ const formSchema = z.object({
   ),
   email: z.string().email(),
   address_line_1: z.string().min(10, "please provide your full address"),
-  city: z.string().min(1, { message: "required" }),
+  city: z.string(),
   state: z.string().min(1, { message: "required" }),
   insurance_company: z
     .string()
@@ -68,7 +69,11 @@ const formSchema = z.object({
   sex: z.string().min(2, "field is required"),
 });
 
+const all_US_States = State.getStatesOfCountry("US");
+
 export default function CustomForm() {
+  const [cityOptions, setCityOptions] = useState(["no state selected"]);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -344,16 +349,27 @@ export default function CustomForm() {
 
           <FormField
             control={form.control}
-            name="address_line_1"
+            name="state"
             render={({ field }) => (
               <FormItem className="col-span-1 md:col-span-1 flex items-center gap-2">
-                <FormLabel className="w-32">Address Line 1</FormLabel>
+                <FormLabel className="w-32">State</FormLabel>
                 <div className="w-full">
                   <FormControl>
-                    <Textarea
-                      rows={1}
-                      placeholder="your full Address here..."
-                      {...field}
+                    {/* <Input placeholder="State" type="text" {...field} /> */}
+                    <Combobox
+                      options={all_US_States.map((x) => x.name)}
+                      setValue={(x: any) => {
+                        field.onChange(x);
+                        const ind = all_US_States.findIndex(
+                          (_x) => _x.name == x
+                        );
+                        const _iso_code = all_US_States[ind].isoCode;
+                        //@ts-ignore
+                        setCityOptions(City.getCitiesOfState("US", _iso_code));
+                      }}
+                      value={field.value}
+                      searchEmptyText="No State found"
+                      searchText="Search Your State"
                     />
                   </FormControl>
                   <div className="h-2 block">
@@ -364,7 +380,7 @@ export default function CustomForm() {
             )}
           />
 
-          <FormField
+          {/* <FormField
             control={form.control}
             name="city"
             render={({ field }) => (
@@ -380,17 +396,49 @@ export default function CustomForm() {
                 </div>
               </FormItem>
             )}
+          /> */}
+          <FormField
+            control={form.control}
+            name="city"
+            render={({ field }) => (
+              <FormItem className="col-span-1 md:col-span-1 flex items-center gap-2">
+                <FormLabel className="w-32">City</FormLabel>
+                <div className="w-full">
+                  <FormControl>
+                    <Combobox
+                      //@ts-ignore
+                      options={cityOptions.map((x) => x.name)}
+                      setValue={field.onChange}
+                      value={field.value}
+                      searchEmptyText={
+                        cityOptions[0] != "no state selected"
+                          ? "No City found"
+                          : "Please select State first"
+                      }
+                      searchText="Search Your City"
+                    />
+                  </FormControl>
+                  <div className="h-2 block">
+                    <FormMessage className="mt-1" />
+                  </div>
+                </div>
+              </FormItem>
+            )}
           />
 
           <FormField
             control={form.control}
-            name="state"
+            name="address_line_1"
             render={({ field }) => (
               <FormItem className="col-span-1 md:col-span-1 flex items-center gap-2">
-                <FormLabel className="w-32">State</FormLabel>
+                <FormLabel className="w-32">Address Line 1</FormLabel>
                 <div className="w-full">
                   <FormControl>
-                    <Input placeholder="State" type="text" {...field} />
+                    <Textarea
+                      rows={1}
+                      placeholder="your full Address here..."
+                      {...field}
+                    />
                   </FormControl>
                   <div className="h-2 block">
                     <FormMessage className="mt-1" />
